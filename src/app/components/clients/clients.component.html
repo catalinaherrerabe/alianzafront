@@ -1,0 +1,199 @@
+<div class="row container d-flex justify-content-left">
+    <div class="col-md-4">
+        <h1> Alianza</h1>
+    </div>    
+</div>
+
+<ul class="nav flex-column">
+    <li class="nav-item" >
+      <a class="nav-link active" aria-current="page" href="#" > <i class="fa fa-user"></i><h4>Clients</h4></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Clients</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Client look history</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled">Emergency PIN configuration</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link disabled">Emergency PIN history</a>
+      </li>
+</ul>
+
+
+<div class="padding">
+    <div class="row container d-flex justify-content-center">
+        <div class="col-lg-8 grid-margin stretch-card">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClient">
+                <i class="fa fa-save"></i> New Cliente
+            </button>
+            <div class="col-6 my-auto mx-auto">
+                <div class="input-group">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="sharedKey"/>
+                    <button type="button" class="btn btn-outline-primary"  >search</button>
+                </div>
+            </div>
+    
+            <div class="col-6 my-auto mx-auto">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdvance">
+                    <i class="fa fa-save"></i> Advance Search
+                </button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+  
+  <div class="col-md-12 p-2">         
+
+        <div class="padding">
+            <div class="row container d-flex justify-content-center">
+                <div class="col-lg-8 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">                          
+                            <div class="table-responsive">
+                                <table id="htmltable" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Shared Key</th>
+                                            <th>Business ID</th>
+                                            <th>E-mail</th>
+                                            <th>Phone</th>
+                                            <th>Data Add</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>  
+                                    <tbody>
+                                        <tr *ngFor="let item of listClients">
+                                            <td>{{item.id}}</td>
+                                            <td>{{item.sharedKey}}</td>
+                                            <td>{{item.businessId}}</td>
+                                            <td>{{item.email}}</td>
+                                            <td>{{item.phone}}</td>
+                                            <td>{{item.dateAdd}}</td>
+                                            <td>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalClient" (click)="selectItem(item)">
+                                                    <i class="fa fa-pencil"></i>
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>                         
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>  
+  </div>
+
+  <div class="modal fade" id="modalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 *ngIf="!isUpdate" class="modal-title fs-5" id="exampleModalLabel">New Client</h1>
+          <h1 *ngIf="isUpdate" class="modal-title fs-5" id="exampleModalLabel">Update Client</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="newClient()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formClient">
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Shared Key</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="sharedkey">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Business ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="businessId">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">E-mail</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control" formControlName="email">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Phone</label>
+                    <div class="col-sm-10">
+                        <input type="tel" class="form-control" formControlName="phone" max="9999999999">
+                    </div>
+                </div>
+            </form>          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button *ngIf="!isUpdate" type="button" class="btn btn-primary" (click)="save()">Save changes</button>
+          <button *ngIf="isUpdate" type="button" class="btn btn-warning" (click)="update()">Update changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalAdvance" tabindex="-1" aria-labelledby="modalAdvanceLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalAdvanceLabel">Advance Search</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Shared Key</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Business ID</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">E-mail</label>
+                    <div class="col-sm-10">
+                        <input type="email" class="form-control">
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Phone</label>
+                    <div class="col-sm-10">
+                        <input type="tel" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">Star date</label>
+                    <div class="col-sm-10">
+                        <input type="datetime-local" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3 row">
+                    <label class="col-sm-2 col-form-lable">End date</label>
+                    <div class="col-sm-10">
+                        <input type="datetime-local" class="form-control">
+                    </div>
+                </div>
+            </form>          
+        </div>
+        <div class="modal-footer">          
+          <button type="button" class="btn btn-primary">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+  
+
